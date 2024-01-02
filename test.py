@@ -74,10 +74,16 @@ print( vp.records )
 # Tạo ràng buộc
 st1 = Equation(container, "st1", domain=[k, j])
 st2 = Equation(container, "st2", domain=[k, i])
+st21 = Equation(container, "st21", domain=[k, i])
+st3 = Equation(container, "st3", domain=[k, j])
+st4 = Equation(container, "st4", domain=[j])
 st1[k, j] = y[k, j] == x[j] - Sum(i, va[i, j] * z[k, i])
-st2[k, i] = 0 <= z[k, i] <= vd[k, i]
+st2[k, j] = 0 <= z[k, i] <= vd[k, i]
+st21[k,i] = z[k, i] <= vd[k, i]
+st3[k ,j] = y[k, j] >=0
+st4[j] = x[j] >= 0
 
-# Tạo phương trình mục tiêu
+ # Tạo phương trình mục tiêu
 objective_fucntion = Sum(j, vb[j] * x[j]) + Sum(k, vp[k] * (Sum(i, (vl[i] - vq[i]) * z[k, i]) - Sum(j, vs[j] * y[k, j])))
 
 question = Model(container, name="question1", equations=[st1,st2], problem="MIP", sense=Sense.MIN, objective=objective_fucntion)
